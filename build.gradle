@@ -29,7 +29,11 @@ dependencies {
     testCompile "junit:junit:4.12"
 }
 
-task buildZip(type: Zip) {
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.2.1'
+}
+
+task prepareJar(type: Jar) {
     from compileJava
     from processResources
     into('lib') {
@@ -37,4 +41,4 @@ task buildZip(type: Zip) {
     }
 }
 
-build.dependsOn buildZip
+jar.dependsOn prepareJar
