@@ -1,6 +1,6 @@
 package com.twbarber.slack
 
-import mu.KotlinLogging
+import com.amazonaws.services.lambda.runtime.Context
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.FormBody
@@ -10,9 +10,9 @@ import okhttp3.Response
 import java.io.IOException
 
 
-object SlackService {
+class SlackService(context: Context) {
 
-    val LOG = KotlinLogging.logger {}
+    val LOG = context.logger
 
     fun send(rawMessage: String, webhookUrl: String) {
         val message = SlackMessage(rawMessage)
@@ -27,7 +27,7 @@ object SlackService {
         OkHttpClient().newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) = println("NOT ok")
             override fun onResponse(call: Call, response: Response) {
-                LOG.info { "Slack Post Succeeded." }
+                LOG.log("Slack Post Succeeded.")
                 response.body()?.close()
             }
         })

@@ -9,29 +9,27 @@ import java.io.OutputStream
 
 object SlackSendLambda {
 
-	fun snsHandler(request: SNSEvent, context: Context): String {
+	fun snsHandler(request: SNSEvent, context: Context) {
 		val logger = context.logger
-		logger.log("Process Running...")
+
 		val config = loadConfig()
 		logger.log("Configuration Loaded...")
 
-		SlackService.send("", config[slackWebhookUrl])
-		return "SlackSendLambda.snsHandler Success"
+		SlackService(context)
+			.send("", config[slackWebhookUrl])
 	}
 
-	fun apiGatewayHandler(request: InputStream, response: OutputStream, context: Context): String {
+	fun apiGatewayHandler(request: InputStream, response: OutputStream, context: Context) {
 		val logger = context.logger
-		logger.log("Process Running...")
 		val config = loadConfig()
 		logger.log("Configuration Loaded...")
 
-		SlackService.send("", config[slackWebhookUrl])
-		return "SlackSendLambda.apiGatewayHandler Success"
+		SlackService(context)
+			.send("", config[slackWebhookUrl])
 	}
 
-	private fun loadConfig(): ConfigurationProperties {
-		return ConfigurationProperties.fromResource("application.properties")
-	}
+	private fun loadConfig(): ConfigurationProperties =
+		ConfigurationProperties.fromResource("application.properties")
 
 }
 
