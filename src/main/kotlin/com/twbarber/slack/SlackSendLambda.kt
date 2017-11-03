@@ -12,7 +12,7 @@ object SlackSendLambda {
 	fun snsHandler(request: SNSEvent, context: Context): String {
 		val logger = context.logger
 		logger.log("Process Running...")
-		val config = ConfigurationProperties.fromResource("application.properties.example")
+		val config = ConfigurationProperties.fromResource("application.properties")
 		logger.log("Configuration Loaded...")
 		SlackService.send("", config[slackWebhookUrl])
 		return "Successfully executed Main.handler()"
@@ -21,7 +21,7 @@ object SlackSendLambda {
 	fun apiGatewayHandler(request: InputStream, response: OutputStream, context: Context): String {
 		val logger = context.logger
 		logger.log("Process Running...")
-		val config = ConfigurationProperties.fromResource("application.properties.example")
+		val config = ConfigurationProperties.fromResource("application.properties")
 		logger.log("Configuration Loaded...")
 		SlackService.send("", config[slackWebhookUrl])
 		return "Successfully executed Main.handler()"
