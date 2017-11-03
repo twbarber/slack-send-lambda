@@ -1,3 +1,7 @@
+# IDEA and Gradle Folders
 .idea
 .gradle
 build
+
+# Local Config
+application.properties

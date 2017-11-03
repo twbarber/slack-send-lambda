@@ -10,5 +10,5 @@ Written using Kotlin and Gradle.
 
 - Run `./gradlew jar` to build your `jar`.
 - Upload `/build/distributions/slack-send-lambda-1.0-SNAPSHOT.zip` to a new Lambda Function
-- Set the Handler of the function to `lambda.Main::handler`
+- Set the Handler of the function to `Main::handler`
 - The Logs should show your Lambda host's IP Address
