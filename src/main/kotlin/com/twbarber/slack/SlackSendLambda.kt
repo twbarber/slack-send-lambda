@@ -15,8 +15,7 @@ object SlackSendLambda {
 		val config = loadConfig()
 		logger.log("Configuration Loaded...")
 
-		SlackService(context)
-			.send("", config[slackWebhookUrl])
+		SlackService.send(context, "", config[slackWebhookUrl])
 	}
 
 	fun apiGatewayHandler(request: InputStream, response: OutputStream, context: Context) {
@@ -24,8 +23,7 @@ object SlackSendLambda {
 		val config = loadConfig()
 		logger.log("Configuration Loaded...")
 
-		SlackService(context)
-			.send("", config[slackWebhookUrl])
+		SlackService.send(context,"", config[slackWebhookUrl])
 	}
 
 	private fun loadConfig(): ConfigurationProperties =
