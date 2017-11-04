@@ -10,10 +10,9 @@ import okhttp3.Response
 import java.io.IOException
 
 
-object SlackService {
+open class SlackService(private val httpClient: OkHttpClient = OkHttpClient()) {
 
-    fun send(context: Context, rawMessage: String, webhookUrl: String) : String {
-        /**
+    open fun send(context: Context, rawMessage: String, webhookUrl: String) {
         val message = SlackMessage(rawMessage)
         val body = FormBody.Builder()
             .add("payload", message.asPostBody())
@@ -23,17 +22,14 @@ object SlackService {
             .post(body)
             .build()
 
-        OkHttpClient().newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) = println("NOT ok")
+        httpClient.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) = context.logger.log("Slack Post Failed.")
             override fun onResponse(call: Call, response: Response) {
                 context.logger.log("Slack Post Succeeded.")
                 response.body()?.close()
             }
         })
-        */
-        return "Completed Send of: $rawMessage"
     }
-
 }
 
 data class SlackMessage(private val content: String) {
