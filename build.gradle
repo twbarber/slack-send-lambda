@@ -20,10 +20,11 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
-    compile "com.amazonaws:aws-lambda-java-core:1.1.0"
-    compile "com.amazonaws:aws-lambda-java-events:1.1.0"
 
-    compile "com.natpryce:konfig:1.6.1.0"
+    compile "com.amazonaws:aws-lambda-java-core:1.1.0"
+    compile "com.amazonaws:aws-lambda-java-events:2.0"
+    compile "com.amazonaws:aws-java-sdk-sns:1.11.223"
+
     compile "com.squareup.okhttp3:okhttp:3.8.1"
 
     testCompile "junit:junit:4.12"

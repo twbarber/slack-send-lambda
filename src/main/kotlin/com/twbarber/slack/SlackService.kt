@@ -12,7 +12,8 @@ import java.io.IOException
 
 object SlackService {
 
-    fun send(context: Context, rawMessage: String, webhookUrl: String) {
+    fun send(context: Context, rawMessage: String, webhookUrl: String) : String {
+        /**
         val message = SlackMessage(rawMessage)
         val body = FormBody.Builder()
             .add("payload", message.asPostBody())
@@ -29,6 +30,8 @@ object SlackService {
                 response.body()?.close()
             }
         })
+        */
+        return "Completed Send of: $rawMessage"
     }
 
 }
