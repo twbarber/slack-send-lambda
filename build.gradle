@@ -26,7 +26,6 @@ dependencies {
     compile "com.natpryce:konfig:1.6.1.0"
     compile "com.squareup.okhttp3:okhttp:3.8.1"
 
-
     testCompile "junit:junit:4.12"
 }
 
@@ -34,12 +33,6 @@ task wrapper(type: Wrapper) {
     gradleVersion = '4.2.1'
 }
 
-task prepareJar(type: Jar) {
-    from compileJava
-    from processResources
-    into('lib') {
-        from configurations.runtime
-    }
+jar {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
-
-jar.dependsOn prepareJar
