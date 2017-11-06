@@ -1,18 +1,16 @@
 package com.twbarber.slack
 
-import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext
 import com.amazonaws.services.lambda.runtime.Context
-import com.amazonaws.services.lambda.runtime.LambdaLogger
-import com.amazonaws.services.lambda.runtime.events.SNSEvent
-import com.amazonaws.services.lambda.runtime.events.SNSEvent.SNSRecord
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
-import com.twbarber.slack.amazon.withMessage
-import com.twbarber.slack.amazon.withSingleRecord
-import com.twbarber.slack.amazon.withSubject
-import com.twbarber.slack.amazon.withTopicArn
+import com.twbarber.slack.amazon.message
+import com.twbarber.slack.amazon.sns
+import com.twbarber.slack.amazon.snsEvent
+import com.twbarber.slack.amazon.snsRecord
+import com.twbarber.slack.amazon.subject
+import com.twbarber.slack.amazon.topicArn
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
@@ -28,13 +26,20 @@ class HandlersTest {
 	@Test
 	fun `snsHandler can parse SNS Event and send Slack Message`() {
 		System.setProperty("WEBHOOK_URL", mockWebhookUrl)
-		val mockEvent = SNSEvent().withSingleRecord(
-			SNSRecord()
-				.withMessage(testMessage)
-				.withSubject("Highlight 12345")
-				.withTopicArn("arn:aws:sns:us-east-1:1111111111:test-topic")
-		)
-
+		val mockEvent = snsEvent {
+			snsRecord {
+				sns {
+					message(testMessage)
+					subject("Highlight 1")
+					topicArn("topic1")
+				}
+			}
+			snsRecord {
+				message(testMessage)
+				subject("Highlight 2")
+				topicArn("topic 2")
+			}
+		}
 		Handlers(mockSlack).snsHandler(mockEvent, mockContext)
 		verify(mockSlack).send(any(), eq(testMessage), eq(mockWebhookUrl))
 	}
