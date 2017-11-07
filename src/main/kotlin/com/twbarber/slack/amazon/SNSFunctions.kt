@@ -37,6 +37,7 @@ fun SNSEvent.snsRecord(init: SNSRecord.() -> Unit): SNSEvent {
     records = records.orEmpty() + record
     return this
 }
+
 fun SNSRecord.sns(init: SNS.() -> Unit): SNSRecord {
     val sns = SNS()
     sns.init()

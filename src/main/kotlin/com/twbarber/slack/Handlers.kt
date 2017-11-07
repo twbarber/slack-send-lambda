@@ -2,7 +2,6 @@ package com.twbarber.slack
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.events.SNSEvent
-import com.twbarber.slack.amazon.message
 import java.io.InputStream
 import java.io.OutputStream
 
