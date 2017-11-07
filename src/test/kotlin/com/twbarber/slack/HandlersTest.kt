@@ -1,9 +1,11 @@
 package com.twbarber.slack
 
 import com.amazonaws.services.lambda.runtime.Context
+import com.amazonaws.services.lambda.runtime.events.SNSEvent
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.eq
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
 import com.twbarber.slack.amazon.message
 import com.twbarber.slack.amazon.sns
@@ -26,22 +28,9 @@ class HandlersTest {
 	@Test
 	fun `snsHandler can parse SNS Event and send Slack Message`() {
 		System.setProperty("WEBHOOK_URL", mockWebhookUrl)
-		val mockEvent = snsEvent {
-			snsRecord {
-				sns {
-					message(testMessage)
-					subject("Highlight 1")
-					topicArn("topic1")
-				}
-			}
-			snsRecord {
-				message(testMessage)
-				subject("Highlight 2")
-				topicArn("topic 2")
-			}
-		}
+		val mockEvent = getMockEvent()
 		Handlers(mockSlack).snsHandler(mockEvent, mockContext)
-		verify(mockSlack).send(any(), eq(testMessage), eq(mockWebhookUrl))
+		verify(mockSlack, times(2)).send(any(), any(), eq(mockWebhookUrl))
 	}
 
 	@Test
@@ -49,4 +38,21 @@ class HandlersTest {
 		System.setProperty("WEBHOOK_URL", mockWebhookUrl)
 	}
 
+    private fun getMockEvent() : SNSEvent =
+        snsEvent {
+            snsRecord {
+                sns {
+                    message(testMessage)
+                    subject("Highlight 1")
+                    topicArn("topic1")
+                }
+            }
+            snsRecord {
+                sns {
+                    subject("Highlight 2")
+                    message(testMessage)
+                    topicArn("topic1")
+                }
+            }
+        }
 }
